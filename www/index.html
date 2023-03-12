@@ -1,15 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>PassManRepeat</title>
+  <link rel="stylesheet" href="styles/index.css">
 </head>
+
 <body>
-  <main>
-    <ul></ul>
-  </main>
+  <h1>Gestor de contraseñas</h1>
+  <div class="container">
+    <div class="category-list">
+      <h2>Categorías</h2>
+      <ul>
+        <li class="active">Sitios web</li>
+        <li>Correo electrónico</li>
+        <li>Redes sociales</li>
+      </ul>
+    </div>
+    <div class="password-list">
+      <h2>Contraseñas de sitios web</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Sitio web</th>
+            <th>Usuario</th>
+            <th>Contraseña</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>www.google.com</td>
+            <td>miusuario@gmail.com</td>
+            <td>m1c0ntr4s3ñ4s3cr3t4</td>
+          </tr>
+          <tr>
+            <td>www.facebook.com</td>
+            <td>miusuario</td>
+            <td>f4c3b00kp4ss</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="form-container">
+        <h2>Agregar nueva contraseña</h2>
+        <form>
+          <label for="sitio-web">Sitio web:</label>
+          <input type="text" id="sitio-web" name="sitio-web" required>
+          <label for="usuario">Usuario:</label>
+          <input type="text" id="usuario" name="usuario" required>
+          <label for="contraseña">Contraseña:</label>
+          <input type="password" id="contraseña" name="contraseña" required>
+          <button type="submit">Agregar</button>
+        </form>
+      </div>
+    </div>
+  </div>
   <script>
     let drawData = (data) => {
       data.forEach(category => {
@@ -26,4 +73,5 @@
       .then(data => drawData(data))
   </script>
 </body>
+
 </html>

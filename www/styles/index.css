@@ -1,0 +1,138 @@
+body {
+    background-color: #e6ffe6;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    color: #26734d;
+    text-align: center;
+    margin: 20px 0;
+}
+
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.category-list {
+    width: 200px;
+    background-color: #c6e0b4;
+    padding: 20px;
+    margin-right: 20px;
+    border-radius: 10px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.category-list h2 {
+    margin-top: 0;
+    font-size: 24px;
+    color: #333;
+}
+
+.category-list ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.category-list li {
+    margin-bottom: 10px;
+    font-size: 20px;
+    color: #333;
+    cursor: pointer;
+}
+
+.category-list li.active {
+    font-weight: bold;
+}
+
+.password-list {
+    flex: 1;
+    background-color: #f0fff0;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.password-list h2 {
+    margin-top: 0;
+    font-size: 24px;
+    color: #333;
+}
+
+.password-list table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-size: 18px;
+    color: #333;
+}
+
+.password-list th,
+.password-list td {
+    padding: 10px;
+    border: 1px solid #ccc;
+    text-align: left;
+}
+
+.password-list th {
+    background-color: #a3c293;
+    color: #fff;
+}
+
+.password-list td:first-child {
+    font-weight: bold;
+}
+
+.password-list td:nth-child(2) {
+    font-style: italic;
+}
+
+.form-container {
+    background-color: #c6e0b4;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    margin-top: 20px;
+}
+
+.form-container label {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 20px;
+    color: #333;
+    font-weight: bold;
+}
+
+.form-container input[type="text"],
+.form-container input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    font-size: 18px;
+    color: #333;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.form-container button {
+    background-color: #26734d;
+    color: #fff;
+    padding: 10px 20px;
+    font-size: 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.form-container button:hover {
+    background-color: #1b543d;
+}
