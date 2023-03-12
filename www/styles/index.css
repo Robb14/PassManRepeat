@@ -96,43 +96,12 @@ h1 {
     font-style: italic;
 }
 
-.form-container {
-    background-color: #c6e0b4;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
-    margin-top: 20px;
-}
-
-.form-container label {
-    display: block;
-    margin-bottom: 10px;
-    font-size: 20px;
-    color: #333;
-    font-weight: bold;
-}
-
-.form-container input[type="text"],
-.form-container input[type="password"] {
-    width: 100%;
-    padding: 10px;
-    font-size: 18px;
-    color: #333;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    margin-bottom: 20px;
-}
-
-.form-container button {
+.btn {
     background-color: #26734d;
     color: #fff;
     padding: 10px 20px;
-    font-size: 20px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-}
-
-.form-container button:hover {
-    background-color: #1b543d;
+    display: inline-block;
 }
