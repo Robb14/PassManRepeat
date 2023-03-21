@@ -14,15 +14,14 @@
   <div class="container">
     <div class="category-list">
       <h2>Categorías</h2>
-      <ul>
-        <li class="active">Sitios web</li>
-      </ul>
+      <ul id="category-list"></ul>
     </div>
     <div class="password-list">
       <h2>Contraseñas de sitios web</h2>
       <div>
         <button class="btn" onclick="window.location.href='./AddSite/addSite.html'">Add site</button>
         <button class="btn" onclick="window.location.href='./AddCategory/addCategory.html'">Add category</button>
+        <button class="btn" id="delete-category-btn">Delete category</button>
       </div>
       <table>
         <thead>
@@ -48,19 +47,102 @@
     </div>
   </div>
   <script>
+    let selectedCategory; // variable global para guardar el nombre de la categoría seleccionada
+
     let drawData = (data) => {
+      let parent = document.getElementById('category-list');
+      parent.innerHTML = '';
+      let categories = {};
       data.forEach(category => {
-        let parent = document.getElementsByTagName('ul')[0]
-        let child = document.createElement('li')
-        // child.innerText = JSON.stringify(category)
-        child.innerText = category.name
-        parent.appendChild(child)
-      })
+        if (!categories[category.name]) {
+          categories[category.name] = category.id;
+          let child = document.createElement('li');
+          child.innerText = category.name;
+          child.setAttribute('id', category.id);
+          child.addEventListener('click', handleCategoryClick);
+          parent.appendChild(child);
+        }
+      });
     }
+
+
 
     fetch("http://localhost:3000/categories")
       .then(res => res.json())
-      .then(data => drawData(data))
+      .then(data => {
+        drawData(data);
+      })
+      .catch(error => alert(error)); // manejar el error "failed to fetch"
+
+    const drawSites = (sites) => {
+      const password = document.querySelector('.password-list tbody');
+      password.innerHTML = '';
+      sites.forEach(site => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${site.name}</td>
+          <td>${site.user}</td>
+          <td>${site.password}</td>
+        `;
+        password.appendChild(row);
+      });
+    }
+
+    const handleCategoryClick = (event) => {
+      // quitar el estilo de la elemento seleccionado anteriormente (si hay uno)
+      if (selectedCategory) {
+        selectedCategory.classList.remove('selected-category');
+      }
+      // agregar el estilo de la categoría seleccionada
+      event.target.classList.add('selected-category');
+      // guardar el elemento de la categoría seleccionada
+      selectedCategory = event.target;
+      // obtener el ID de la categoría seleccionada
+      const categoryId = event.target.getAttribute('id');
+      // obtener los sitios web de la categoría seleccionada
+      fetch(`http://localhost:3000/sites?category=${categoryId}`)
+        .then(res => res.json())
+        .then(data => {
+          drawSites(data);
+        })
+        .catch(error => alert(error));
+    }
+
+    document.getElementById('delete-category-btn').addEventListener('click', () => {
+      // verificar si hay alguna categoría seleccionada
+      if (!selectedCategory) {
+        alert('Selecciona una categoría para eliminar.');
+        return;
+      }
+      // pedir confirmación al usuario antes de eliminar la categoría
+      const confirmDelete = confirm(`¿Estás seguro de que quieres eliminar la categoría "${selectedCategory.innerText}"?`);
+      if (confirmDelete) {
+        // obtener el ID de la categoría seleccionada
+        const categoryId = selectedCategory.getAttribute('id');
+        // enviar la solicitud para eliminar la categoría
+        fetch(`http://localhost:3000/categories/${categoryId}`, { // usar el ID de la categoría en lugar de su nombre
+          method: 'DELETE'
+        })
+          .then(res => {
+            if (res.status === 404) {
+              throw new Error('La categoría no se encontró.');
+            }
+            return res.json();
+          })
+          .then(data => {
+            // dibujar la lista de categorías actualizada
+            drawData(data);
+            // eliminar los sitios web de la categoría eliminada
+            drawSites([]);
+            // quitar el estilo de la categoría seleccionada
+            selectedCategory.classList.remove('selected-category');
+            // borrar la variable de la categoría seleccionada
+            selectedCategory = null;
+          })
+          .catch(error => alert(error));
+      }
+    });
+
   </script>
 </body>
 

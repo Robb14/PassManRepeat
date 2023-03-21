@@ -1,8 +1,10 @@
 <html>
+
 <head>
 	<title>Crear Categoría</title>
 	<link rel="stylesheet" type="text/css" href="./addcategory.css">
 </head>
+
 <body>
 	<header>
 		<h1>Crear Categoría</h1>
@@ -10,12 +12,50 @@
 	<main>
 		<section class="create-category">
 			<h2>Introduce el nombre de la categoría:</h2>
-			<form>
+			<form id="category-form">
 				<label for="category-name">Nombre de la categoría:</label>
 				<input type="text" id="category-name" name="category-name">
 				<input type="submit" value="Crear">
 			</form>
 		</section>
 	</main>
+
+	<script>
+		const categoryForm = document.querySelector('#category-form');
+
+		categoryForm.addEventListener('submit', (event) => {
+			event.preventDefault(); // Prevenir comportamiento predeterminado del formulario
+
+			// Obtener el valor del campo de entrada de nombre de categoría
+			const categoryName = document.querySelector('#category-name').value;
+
+			// Enviar una solicitud POST al servidor
+			fetch('http://localhost:3000/categories', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({
+					name: categoryName
+				})
+			})
+				.then(res => res.json())
+				.then(data => {
+					// Si la solicitud fue exitosa, dibuja la lista de categorías actualizada
+					drawData(data);
+				})
+				.catch(error => {
+					console.error('Error al crear categoría:', error);
+				});
+
+				window.location.href = '../index.html';
+
+
+			// Limpiar el campo de entrada de nombre de categoría después de enviar el formulario
+			document.querySelector('#category-name').value = '';
+		});
+
+	</script>
 </body>
+
 </html>

@@ -105,3 +105,7 @@ h1 {
     cursor: pointer;
     display: inline-block;
 }
+
+.selected-category {
+    font-weight: bold;
+}
