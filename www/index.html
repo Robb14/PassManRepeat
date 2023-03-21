@@ -89,6 +89,7 @@
     }
 
     const handleCategoryClick = (event) => {
+      const category = event.target.getAttribute('data-category');
       // quitar el estilo de la elemento seleccionado anteriormente (si hay uno)
       if (selectedCategory) {
         selectedCategory.classList.remove('selected-category');
@@ -98,9 +99,9 @@
       // guardar el elemento de la categoría seleccionada
       selectedCategory = event.target;
       // obtener el ID de la categoría seleccionada
-      const categoryId = event.target.getAttribute('id');
+      const id = event.target.getAttribute('id');
       // obtener los sitios web de la categoría seleccionada
-      fetch(`http://localhost:3000/sites?category=${categoryId}`)
+      fetch(`http://localhost:3000/categories/` + id)
         .then(res => res.json())
         .then(data => {
           drawSites(data);

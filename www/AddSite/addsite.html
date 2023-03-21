@@ -1,20 +1,68 @@
 <html>
-  <head>
-    <title>Almacenamiento de contraseñas</title>
-    <link rel="stylesheet" href="./addsite.css">
-  </head>
-  <body>
-    <div class="container">
-      <h1>Pass saver</h1>
-      <form>
-        <label for="sitio-web">Web site:</label>
-        <input type="text" id="sitio-web" name="sitio-web" required>
-        <label for="usuario">User:</label>
-        <input type="text" id="usuario" name="usuario" required>
-        <label for="contrasena">Password:</label>
-        <input type="password" id="contrasena" name="contrasena" required>
-        <input type="submit" value="Guardar">
-      </form>
-    </div>
-  </body>
+
+<head>
+  <title>Almacenamiento de contraseñas</title>
+  <link rel="stylesheet" href="./addsite.css">
+  <link rel="import" href="/www/index.html">
+</head>
+
+<body>
+  <div class="container">
+    <h1>Pass saver</h1>
+    <form>
+      <label for="sitio-web">Web site:</label>
+      <input type="text" id="sitio-web" name="sitio-web" required>
+      <label for="usuario">User:</label>
+      <input type="text" id="usuario" name="usuario" required>
+      <label for="contrasena">Password:</label>
+      <input type="password" id="contraseña" name="contraseña" required>
+      <input type="submit" value="Guardar">
+    </form>
+  </div>
+  <script>
+    const form = document.querySelector('form');
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+
+      const name = document.querySelector('#sitio-web').value;
+      const user = document.querySelector('#usuario').value;
+      const password = document.querySelector('#contraseña').value;
+      const selectedCategory = document.querySelector('.selected-category');
+
+      if (!selectedCategory) {
+        alert('Por favor seleccione una categoría');
+        return;
+      }
+
+      const categoryId = selectedCategory.getAttribute('id');
+
+      const data = {
+        name,
+        user,
+        password,
+        categoryId
+      };
+
+      fetch('http://localhost:3000/categories/' + categoryId, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Ocurrió un error al guardar el sitio web');
+          }
+          alert('El sitio web ha sido guardado exitosamente');
+        })
+        .catch(error => {
+          alert(error.message);
+        });
+        window.location.href = '../index.html';
+    });
+  </script>
+</body>
+
 </html>
