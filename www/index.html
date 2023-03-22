@@ -34,18 +34,16 @@
         </thead>
         <tbody>
           <tr>
-            <td></td>
-            <td></td>
-            <td></td>
           </tr>
         </tbody>
       </table>
     </div>
   </div>
   <script>
-    let selectedCategory; // variable global para guardar el nombre de la categoría seleccionada
-    let selectedSite; // variable global para guardar el nombre del site seleccionado
+    let selectedCategory; // Variable global para guardar el nombre de la categoría seleccionada
+    let selectedSite; // Variable global para guardar el nombre del site seleccionado
 
+    // DrawData
     let drawData = (data) => {
       let parent = document.getElementById('category-list');
       parent.innerHTML = '';
@@ -62,15 +60,15 @@
       });
     }
 
-
-
+    // Fetch categorías
     fetch("http://localhost:3000/categories")
       .then(res => res.json())
       .then(data => {
         drawData(data);
       })
       .catch(error => alert(error)); // manejar el error "failed to fetch"
-
+    
+    // DrawSites
     const drawSites = (sites) => {
       const password = document.querySelector('.password-list tbody');
       password.innerHTML = '';
@@ -87,22 +85,23 @@
       });
     }
 
+    // Evento al hacer click a las categorías
     const handleCategoryClick = (event) => {
       const category = event.target.getAttribute('data-category');
-      // quitar el estilo del elemento seleccionado anteriormente (si hay uno)
+      // Quitar el estilo del elemento seleccionado anteriormente (si hay uno)
       if (selectedCategory) {
         selectedCategory.classList.remove('selected-category');
       }
-      // agregar el estilo de la categoría seleccionada
+      // Agregar el estilo de la categoría seleccionada
       event.target.classList.add('selected-category');
-      // guardar el elemento de la categoría seleccionada
+      // Guardar el elemento de la categoría seleccionada
       selectedCategory = event.target;
-      // obtener el ID de la categoría seleccionada
+      // Obtener el ID de la categoría seleccionada
       const id = event.target.getAttribute('id');
-
+      // Guardamos en localStorage el id de la categoría
       localStorage.setItem('selectedCategoryId', id);
 
-      // obtener los sitios web de la categoría seleccionada
+      // Fetch para obtener los sitios web de la categoría seleccionada
       fetch(`http://localhost:3000/categories/` + id)
         .then(res => res.json())
         .then(data => {
@@ -112,18 +111,18 @@
     }
 
     document.getElementById('delete-category-btn').addEventListener('click', () => {
-      // verificar si hay alguna categoría seleccionada
+      // Verificar si hay alguna categoría seleccionada
       if (!selectedCategory) {
         alert('Selecciona una categoría para eliminar.');
         return;
       }
-      // pedir confirmación al usuario antes de eliminar la categoría
+      // Pedir confirmación al usuario antes de eliminar la categoría
       const confirmDelete = confirm(`¿Estás seguro de que quieres eliminar la categoría "${selectedCategory.innerText}"?`);
       if (confirmDelete) {
-        // obtener el ID de la categoría seleccionada
+        // Obtener el ID de la categoría seleccionada
         const categoryId = selectedCategory.getAttribute('id');
-        // enviar la solicitud para eliminar la categoría
-        fetch(`http://localhost:3000/categories/${categoryId}`, { // usar el ID de la categoría
+        // Enviar la solicitud para eliminar la categoría
+        fetch(`http://localhost:3000/categories/${categoryId}`, { // Usar el ID de la categoría
           method: 'DELETE'
         })
           .then(res => {
@@ -133,45 +132,46 @@
             return res.json();
           })
           .then(data => {
-            // dibujar la lista de categorías actualizada
+            // Dibujar la lista de categorías actualizada
             drawData(data);
-            // eliminar los sitios web de la categoría eliminada
+            // Eliminar los sitios web de la categoría eliminada
             drawSites([]);
-            // quitar el estilo de la categoría seleccionada
+            // Quitar el estilo de la categoría seleccionada
             selectedCategory.classList.remove('selected-category');
-            // borrar la variable de la categoría seleccionada
+            // Borrar la variable de la categoría seleccionada
             selectedCategory = null;
           })
       }
     });
 
+    // Evento al hacer click a los sites
     const handleSiteClick = (event) => {
-      const row = event.target.closest('tr'); // seleccionar el elemento 'tr' más cercano
-      if (!row) return; // si no se encuentra un elemento 'tr', salir de la función
+      const row = event.target.closest('tr'); // Seleccionar el elemento 'tr' más cercano
+      if (!row) return; // Si no se encuentra un elemento 'tr', salir de la función
 
-      // quitar el estilo del elemento seleccionado anteriormente (si hay uno)
+      // Quitar el estilo del elemento seleccionado anteriormente (si hay uno)
       if (selectedSite) {
         selectedSite.classList.remove('selected-site');
       }
-      // agregar el estilo del sitio seleccionado
+      // Agregar el estilo del sitio seleccionado
       row.classList.add('selected-site');
-      // guardar el elemento del sitio seleccionado
+      // Guardar el elemento del sitio seleccionado
       selectedSite = row;
     }
 
     document.getElementById('delete-site-btn').addEventListener('click', () => {
-      // verificar si hay algún sitio web seleccionado
+      // Verificar si hay algún sitio web seleccionado
       if (!selectedSite) {
         alert('Selecciona un sitio web para eliminar.');
         return;
       }
-      // pedir confirmación al usuario antes de eliminar el sitio web
+      // Pedir confirmación al usuario antes de eliminar el sitio web
       const confirmDelete = confirm(`¿Estás seguro de que quieres eliminar el sitio web "${selectedSite.innerText}"?`);
       if (confirmDelete) {
-        // obtener el ID del sitio web seleccionado
+        // Obtener el ID del sitio web seleccionado
         const siteId = selectedSite.getAttribute('id');
-        // enviar la solicitud para eliminar el sitio web
-        fetch(`http://localhost:3000/sites/` + siteId, { // usar el ID del sitio web en lugar de su nombre
+        // Fetch para enviar la solicitud para eliminar el sitio web
+        fetch(`http://localhost:3000/sites/` + siteId, { // Usar el ID del sitio web
           method: 'DELETE'
         })
           .then(res => {
@@ -181,16 +181,15 @@
             return res.json();
           })
           .then(data => {
-            // dibujar los sitios web actualizados de la categoría seleccionada
+            // Dibujar los sitios web actualizados de la categoría seleccionada
             drawSites(data);
-            // quitar el estilo del sitio web seleccionado
+            // Quitar el estilo del sitio web seleccionado
             selectedSite.classList.remove('selected-site');
-            // borrar la variable del sitio web seleccionado
+            // Borrar la variable del sitio web seleccionado
             selectedSite = null;
           })
       }
     });
-
 
   </script>
 </body>
