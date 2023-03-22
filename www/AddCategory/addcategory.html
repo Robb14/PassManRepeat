@@ -24,9 +24,8 @@
 		const categoryForm = document.querySelector('#category-form');
 
 		categoryForm.addEventListener('submit', (event) => {
-			event.preventDefault(); // Prevenir comportamiento predeterminado del formulario
+			event.preventDefault();
 
-			// Obtener el valor del campo de entrada de nombre de categoría
 			const categoryName = document.querySelector('#category-name').value;
 
 			// Enviar una solicitud POST al servidor
@@ -48,13 +47,11 @@
 					console.error('Error al crear categoría:', error);
 				});
 
-				window.location.href = '../index.html';
-
+			window.location.href = '../index.html';
 
 			// Limpiar el campo de entrada de nombre de categoría después de enviar el formulario
 			document.querySelector('#category-name').value = '';
 		});
-
 	</script>
 </body>
 
