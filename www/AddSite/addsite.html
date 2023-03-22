@@ -1,27 +1,32 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 
 <head>
-  <title>Almacenamiento de contraseñas</title>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AddSite</title>
   <link rel="stylesheet" href="./addsite.css">
-  <link rel="import" href="/www/index.html">
 </head>
 
 <body>
   <div class="container">
     <h1>Pass saver</h1>
     <form id="site-form">
-      <label for="sitio-web">Web site:</label>
+      <label for="sitio-web">Sitio web:</label>
       <input type="text" id="sitio-web" name="sitio-web" required>
       <label for="usuario">User:</label>
       <input type="text" id="usuario" name="usuario" required>
-      <label for="contrasena">Password:</label>
+      <label for="contrasena">Contraseña:</label>
       <input type="password" id="contrasena" name="contrasena" required>
+      <button type="button" onclick="generatePassword()" class="generate-password">Generar contraseña</button>
       <input type="submit" value="Guardar">
     </form>
   </div>
   <script>
     const form = document.querySelector('#site-form');
 
+    // Método a partir de submit
     form.addEventListener('submit', (event) => {
       event.preventDefault();
       const selectedCategory = localStorage.getItem('selectedCategoryId');
@@ -39,6 +44,7 @@
         description: ''
       };
 
+      // Fetch
       fetch("http://localhost:3000/categories/" + categoryId, {
         method: 'POST',
         headers: {
@@ -58,6 +64,16 @@
 
       window.location.href = '../index.html';
     });
+
+    // Generar contraseñas aleatorias
+    function generatePassword() {
+      const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+";
+      let password = "";
+      for (let i = 0; i < 12; i++) {
+        password += chars.charAt(Math.floor(Math.random() * chars.length));
+      }
+      document.getElementById("contrasena").value = password;
+    }
   </script>
 </body>
 
