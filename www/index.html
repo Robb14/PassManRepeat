@@ -34,14 +34,9 @@
         </thead>
         <tbody>
           <tr>
-            <td>www.google.com</td>
-            <td>miusuario@gmail.com</td>
-            <td>m1c0ntr4s3ñ4s3cr3t4</td>
-          </tr>
-          <tr>
-            <td>www.facebook.com</td>
-            <td>miusuario</td>
-            <td>f4c3b00kp4ss</td>
+            <td></td>
+            <td></td>
+            <td></td>
           </tr>
         </tbody>
       </table>
@@ -49,6 +44,7 @@
   </div>
   <script>
     let selectedCategory; // variable global para guardar el nombre de la categoría seleccionada
+    let selectedSite; // variable global para guardar el nombre del site seleccionado
 
     let drawData = (data) => {
       let parent = document.getElementById('category-list');
@@ -85,13 +81,15 @@
           <td>${site.user}</td>
           <td>${site.password}</td>
         `;
+        row.setAttribute('id', site.id);
+        row.addEventListener('click', handleSiteClick);
         password.appendChild(row);
       });
     }
 
     const handleCategoryClick = (event) => {
       const category = event.target.getAttribute('data-category');
-      // quitar el estilo de la elemento seleccionado anteriormente (si hay uno)
+      // quitar el estilo del elemento seleccionado anteriormente (si hay uno)
       if (selectedCategory) {
         selectedCategory.classList.remove('selected-category');
       }
@@ -125,7 +123,7 @@
         // obtener el ID de la categoría seleccionada
         const categoryId = selectedCategory.getAttribute('id');
         // enviar la solicitud para eliminar la categoría
-        fetch(`http://localhost:3000/categories/${categoryId}`, { // usar el ID de la categoría en lugar de su nombre
+        fetch(`http://localhost:3000/categories/${categoryId}`, { // usar el ID de la categoría
           method: 'DELETE'
         })
           .then(res => {
@@ -144,9 +142,55 @@
             // borrar la variable de la categoría seleccionada
             selectedCategory = null;
           })
-          .catch(error => alert(error));
       }
     });
+
+    const handleSiteClick = (event) => {
+      const row = event.target.closest('tr'); // seleccionar el elemento 'tr' más cercano
+      if (!row) return; // si no se encuentra un elemento 'tr', salir de la función
+
+      // quitar el estilo del elemento seleccionado anteriormente (si hay uno)
+      if (selectedSite) {
+        selectedSite.classList.remove('selected-site');
+      }
+      // agregar el estilo del sitio seleccionado
+      row.classList.add('selected-site');
+      // guardar el elemento del sitio seleccionado
+      selectedSite = row;
+    }
+
+    document.getElementById('delete-site-btn').addEventListener('click', () => {
+      // verificar si hay algún sitio web seleccionado
+      if (!selectedSite) {
+        alert('Selecciona un sitio web para eliminar.');
+        return;
+      }
+      // pedir confirmación al usuario antes de eliminar el sitio web
+      const confirmDelete = confirm(`¿Estás seguro de que quieres eliminar el sitio web "${selectedSite.innerText}"?`);
+      if (confirmDelete) {
+        // obtener el ID del sitio web seleccionado
+        const siteId = selectedSite.getAttribute('id');
+        // enviar la solicitud para eliminar el sitio web
+        fetch(`http://localhost:3000/sites/` + siteId, { // usar el ID del sitio web en lugar de su nombre
+          method: 'DELETE'
+        })
+          .then(res => {
+            if (res.status === 404) {
+              throw new Error('El sitio web no se encontró.');
+            }
+            return res.json();
+          })
+          .then(data => {
+            // dibujar los sitios web actualizados de la categoría seleccionada
+            drawSites(data);
+            // quitar el estilo del sitio web seleccionado
+            selectedSite.classList.remove('selected-site');
+            // borrar la variable del sitio web seleccionado
+            selectedSite = null;
+          })
+      }
+    });
+
 
   </script>
 </body>

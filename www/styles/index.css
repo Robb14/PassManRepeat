@@ -109,3 +109,8 @@ h1 {
 .selected-category {
     font-weight: bold;
 }
+
+.selected-site {
+    background-color: black;
+    color: white;
+}
