@@ -22,6 +22,7 @@
         <button class="btn" onclick="window.location.href='./AddSite/addSite.html'">Add site</button>
         <button class="btn" onclick="window.location.href='./AddCategory/addCategory.html'">Add category</button>
         <button class="btn" id="delete-category-btn">Delete category</button>
+        <button class="btn" id="delete-site-btn">Delete site</button>
       </div>
       <table>
         <thead>
@@ -100,6 +101,9 @@
       selectedCategory = event.target;
       // obtener el ID de la categoría seleccionada
       const id = event.target.getAttribute('id');
+
+      localStorage.setItem('selectedCategoryId', id);
+
       // obtener los sitios web de la categoría seleccionada
       fetch(`http://localhost:3000/categories/` + id)
         .then(res => res.json())

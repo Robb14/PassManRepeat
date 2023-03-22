@@ -9,47 +9,42 @@
 <body>
   <div class="container">
     <h1>Pass saver</h1>
-    <form>
+    <form id="site-form">
       <label for="sitio-web">Web site:</label>
       <input type="text" id="sitio-web" name="sitio-web" required>
       <label for="usuario">User:</label>
       <input type="text" id="usuario" name="usuario" required>
       <label for="contrasena">Password:</label>
-      <input type="password" id="contraseña" name="contraseña" required>
+      <input type="password" id="contrasena" name="contrasena" required>
       <input type="submit" value="Guardar">
     </form>
   </div>
   <script>
-    const form = document.querySelector('form');
+    const form = document.querySelector('#site-form');
 
     form.addEventListener('submit', (event) => {
       event.preventDefault();
-
-      const name = document.querySelector('#sitio-web').value;
-      const user = document.querySelector('#usuario').value;
-      const password = document.querySelector('#contraseña').value;
-      const selectedCategory = document.querySelector('.selected-category');
+      const selectedCategory = localStorage.getItem('selectedCategoryId');
 
       if (!selectedCategory) {
         alert('Por favor seleccione una categoría');
         return;
       }
 
-      const categoryId = selectedCategory.getAttribute('id');
-
-      const data = {
-        name,
-        user,
-        password,
-        categoryId
+      const categoryId = selectedCategory;
+      let Site = {
+        name: document.querySelector('#sitio-web').value,
+        user: document.querySelector('#usuario').value,
+        password: document.querySelector('#contrasena').value,
+        description: ''
       };
 
-      fetch('http://localhost:3000/categories/' + categoryId, {
+      fetch("http://localhost:3000/categories/" + categoryId, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(data)
+        body: JSON.stringify(Site),
       })
         .then(response => {
           if (!response.ok) {
@@ -60,7 +55,8 @@
         .catch(error => {
           alert(error.message);
         });
-        window.location.href = '../index.html';
+
+      window.location.href = '../index.html';
     });
   </script>
 </body>
